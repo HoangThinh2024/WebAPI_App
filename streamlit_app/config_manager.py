@@ -8,7 +8,7 @@ from typing import Dict, Mapping
 from dotenv import dotenv_values, load_dotenv, set_key
 
 
-ENV_PATH = Path(__file__).resolve().parent / ".env"
+ENV_PATH = Path(__file__).resolve().parent.parent / ".env"
 
 
 def load_env_values() -> Dict[str, str]:

@@ -1,4 +1,141 @@
-# WebAPI_App
+# Base.vn Candidate Explorer
+
+Ứng dụng quản lý và theo dõi ứng viên từ Base.vn với 2 phiên bản frontend:
+
+## 🎯 Tính năng
+
+- 🔑 Quản lý Access Token và cấu hình
+- 🗂️ Tải danh sách Openings & Stages từ Base.vn
+- 📋 Lọc và hiển thị danh sách ứng viên
+- 📈 Hiển thị metrics và thống kê
+- 📁 Xem chi tiết ứng viên
+- 💬 Xem lịch sử tin nhắn/notes
+- 🧾 Xem JSON phản hồi thô để debug
+
+## 📁 Cấu trúc Project
+
+```
+WebAPI_App/
+├── streamlit_app/          # Backend (FastAPI) + Streamlit UI
+│   ├── app.py             # Streamlit application
+│   ├── web_api.py         # FastAPI proxy server ⭐
+│   ├── api_client.py      # Base.vn API client
+│   ├── data_processor.py  # Data processing
+│   ├── config_manager.py  # Configuration
+│   ├── requirements.txt   # Python dependencies
+│   └── ui/                # Streamlit UI components
+│
+├── web_vue/               # Vue 3 + Vite frontend ⭐
+│   ├── src/
+│   │   ├── App.vue       # Main component
+│   │   ├── main.js       # Entry point
+│   │   └── style.css     # Styles
+│   ├── package.json      # Node dependencies
+│   └── vite.config.js    # Vite config
+│
+├── app_vue.html          # Standalone Vue (CDN, không cần Node.js)
+├── .env                  # Environment variables
+└── README_PROJECT.md     # Chi tiết đầy đủ
+```
+
+## 🚀 Quick Start
+
+### Option 1: Vue + Vite (Khuyến nghị) ⭐
+
+**Yêu cầu:** Node.js 18+ từ https://nodejs.org/
+
+```powershell
+# Terminal 1: Chạy FastAPI backend
+cd streamlit_app
+python web_api.py
+
+# Terminal 2: Cài đặt và chạy Vue
+cd web_vue
+npm install
+npm run dev
+```
+
+**Mở:** http://localhost:5173
+
+### Option 2: Streamlit App
+
+```powershell
+# Terminal 1: FastAPI backend
+cd streamlit_app
+python web_api.py
+
+# Terminal 2: Streamlit UI
+cd streamlit_app
+streamlit run app.py
+```
+
+**Mở:** http://localhost:8501
+
+### Option 3: Standalone Vue HTML (Không cần Node.js)
+
+```powershell
+# Terminal 1: FastAPI backend
+cd streamlit_app
+python web_api.py
+
+# Terminal 2: Static server
+python -m http.server 5555
+```
+
+**Mở:** http://127.0.0.1:5555/app_vue.html
+
+## ⚙️ Cấu hình
+
+Tạo file `.env`:
+
+```env
+BASE_TOKEN=your-base-vn-token-here
+OPENING_ID=9346
+STAGE_ID=75440
+NUM_PER_PAGE=50
+LOCAL_PROXY_URL=http://127.0.0.1:8000
+```
+
+## 📚 Tài liệu
+
+- **README_PROJECT.md** - Tài liệu chi tiết toàn bộ project
+- **HUONG_DAN_CHAY_VUE.md** - Hướng dẫn Vue app chi tiết
+- **streamlit_app/README.md** - Backend documentation
+- **web_vue/README.md** - Vue frontend documentation
+
+## 🔗 API Endpoints
+
+FastAPI server: http://127.0.0.1:8000
+
+- `POST /openings` - Danh sách openings
+- `POST /opening/{id}` - Chi tiết opening
+- `POST /candidates` - Danh sách ứng viên
+- `POST /candidate/{id}` - Chi tiết ứng viên
+- `POST /candidate/{id}/messages` - Tin nhắn ứng viên
+
+**API Docs:** http://127.0.0.1:8000/docs
+
+## 🛠️ Development
+
+### Vue với Extension (VS Code)
+
+- Cài extension: **Vue - Official**
+- Hot reload tự động
+- Syntax highlighting, IntelliSense
+- Component refactoring
+
+### Build Production
+
+```powershell
+cd web_vue
+npm run build
+```
+
+Output: `web_vue/dist/`
+
+## 📝 License
+
+MIT
 
 This repository contains utilities and a small proxy web API for the public Base.vn hiring API.
 
