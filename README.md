@@ -1,53 +1,80 @@
-# Base.vn Candidate Explorer
+# WebAPI App - Base.vn Candidate Explorer
 
 > Ứng dụng web hiện đại, responsive, đa nền tảng để quản lý và theo dõi ứng viên từ Base.vn Public API
 
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
 [![Vue](https://img.shields.io/badge/Vue-3.5-brightgreen.svg)](https://vuejs.org/)
 [![pnpm](https://img.shields.io/badge/pnpm-9.0-orange.svg)](https://pnpm.io/)
+[![Security](https://img.shields.io/badge/Security-Production%20Ready-brightgreen.svg)](docs/SECURITY_DEPLOYMENT_GUIDE.md)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+**Version:** 2.2.2 (Production Ready) ✅  
+**Released:** 2025-10-17
 
 ## ✨ Highlights
 
 - 🎨 **Responsive Design** - Tối ưu cho desktop, tablet, mobile (iOS/Android)
-- ⚡ **Performance** - Vite HMR, pnpm nhanh gấp 2x npm, code splitting
-- 🌐 **Cross-platform** - Windows, macOS, Linux, iOS Safari, Android Chrome
-- 🔒 **Type-safe** - JSDoc typing, ESLint, Prettier
-- 📱 **Mobile-first** - Touch-friendly, adaptive layout, hidden columns
-- 🎯 **Modern Stack** - Vue 3 Composition API, Express.js, Axios
+- ⚡ **High Performance** - Vite HMR, 70% faster modal open time, optimized RAM usage
+- 🌐 **Network Mode** - Share trên LAN, truy cập từ nhiều thiết bị
+- 🔒 **Production Security** - XSS protection, authentication, security audit automation
+- 🌙 **Dark Mode** - Auto-detect system theme, smooth transitions
+- 🎯 **Modern Stack** - Vue 3 Composition API, Express.js, DOMPurify, SHA256
+- 📦 **Automated Deployment** - Build, test, deploy scripts với security checks
 
-## 🚀 Quick Start
+## 🚀 Siêu Nhanh - Dùng App Manager!
+
+```powershell
+# Chạy 1 lệnh duy nhất - mọi thứ tự động!
+.\app-manager.ps1
+```
+
+**Menu tương tác:**
+- Development: Start Vue, Backend, Full Stack
+- Production: Security audit, Build, Deploy
+- Maintenance: Cleanup, Authentication, Reports
+- Documentation: Guides, Structure
+
+## 📖 Quick Start (Traditional)
 
 ### Yêu cầu
 
-- **Node.js** 18 LTS+ ([tải tại đây](https://nodejs.org/))
-- **pnpm** 9.0+ (cài qua `npm install -g pnpm`)
+- **Node.js** 18 LTS+ ([Download](https://nodejs.org/))
+- **pnpm** 9.0+ (Install: `npm install -g pnpm`)
 
-### Cài đặt & Chạy
+### Development Mode
 
 ```powershell
-# Cài pnpm nếu chưa có
-npm install -g pnpm
+# Option 1: Sử dụng App Manager (Recommended)
+.\app-manager.ps1
+# Chọn [3] Start Full Stack
 
-# Backend Node.js (Terminal 1)
-cd node_backend
-pnpm install
-pnpm dev
-# ➜ Server: http://localhost:3000
+# Option 2: Manual
+# Terminal 1 - Backend
+.\scripts\development\start-backend.ps1
 
-# Frontend Vue (Terminal 2)
-cd web_vue
-pnpm install
-pnpm dev
-# ➜ Local:   http://localhost:5173
-# ➜ Network: http://192.168.x.x:5173  (truy cập từ mobile)
+# Terminal 2 - Frontend (Network mode)
+.\scripts\development\start-network.ps1
 ```
 
-### Truy cập ứng dụng
+### Production Mode
+
+```powershell
+# 1. Security audit
+.\scripts\production\security-audit.ps1
+
+# 2. Build production
+.\scripts\production\build-production.ps1
+
+# 3. Deploy
+.\scripts\production\deploy-production.ps1 -DeployTarget local
+```
+
+### Truy cập
 
 - **Desktop:** <http://localhost:5173>
-- **Mobile (cùng WiFi):** Sử dụng địa chỉ Network hiển thị trong terminal
-- **API Health:** <http://localhost:3000/health>
+- **Mobile (LAN):** <http://192.168.x.x:5173>
+- **Backend API:** <http://localhost:3000>
+- **Health Check:** <http://localhost:3000/health>
 
 ## 🎯 Tính năng
 

@@ -265,6 +265,7 @@ app.use((_, res) => {
   res.status(404).json({ success: false, error: 'Route not found' });
 });
 
-app.listen(PORT, () => {
-  log(`Node backend listening on port ${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  log(`Node backend listening on 0.0.0.0:${PORT}`);
+  log(`Access from other devices: http://YOUR_IP:${PORT}`);
 });

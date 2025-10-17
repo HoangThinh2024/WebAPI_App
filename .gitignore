@@ -133,6 +133,8 @@ celerybeat.pid
 
 # Environments
 .env
+.env.local
+.env.production
 .venv
 env/
 venv/
@@ -204,3 +206,5 @@ dist/
 
 # Note: pnpm-lock.yaml should be committed for reproducible builds
 
+security-audit-report.json
+scripts\production\security-audit-report.json

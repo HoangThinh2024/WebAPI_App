@@ -6,16 +6,32 @@ export default defineConfig({
   plugins: [vue()],
   server: {
     port: 5173,
-    host: true, // Listen on all addresses including LAN and public
-    strictPort: false, // Try next available port if 5173 is busy
+    host: '0.0.0.0', // Listen on all network interfaces
+    strictPort: false,
     cors: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: process.env.VITE_API_TARGET || 'http://localhost:3000',
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path.replace(/^\/api/, '/api')
+        rewrite: (path) => path.replace(/^\/api/, '/api'),
+        configure: (proxy, options) => {
+          proxy.on('error', (err, req, res) => {
+            console.log('Proxy error:', err)
+          })
+          proxy.on('proxyReq', (proxyReq, req, res) => {
+            // Log proxy requests for debugging
+            if (process.env.DEBUG) {
+              console.log('Proxying:', req.method, req.url, '->', options.target + req.url)
+            }
+          })
+        }
       }
+    },
+    // Network access configuration
+    hmr: {
+      host: 'localhost', // Use localhost for HMR to avoid network issues
+      protocol: 'ws'
     }
   },
   preview: {

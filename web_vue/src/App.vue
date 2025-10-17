@@ -2,6 +2,8 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import axios from 'axios'
 import TokenSettings from './components/TokenSettings.vue'
+import CandidateDetail from './components/CandidateDetail.vue'
+import MessagesList from './components/MessagesList.vue'
 import { useTokenManager } from './composables/useTokenManager.js'
 
 const tokenManager = useTokenManager()
@@ -42,9 +44,12 @@ const modal = ref({
   open: false,
   loading: false,
   candidateId: null,
-  detailJson: '',
-  messagesJson: ''
+  candidateData: null,
+  messagesData: [],
+  activeTab: 'detail' // 'detail' or 'messages'
 })
+
+const darkMode = ref(localStorage.getItem('dark_mode') === 'true')
 
 const sanitizedApiBase = computed(() => {
   const base = apiBase.value || ''
@@ -82,7 +87,10 @@ function buildUrl(path) {
 }
 
 function handleTokenSaved(result) {
-  console.log('Token saved:', result)
+  accessToken.value = result.token
+  if (result.base_url) {
+    apiBase.value = result.base_url
+  }
 }
 
 function handleTokenCleared() {
@@ -148,7 +156,6 @@ async function fetchCandidates() {
 
     metrics.value = resp.data.metrics || null
     candidates.value = Array.isArray(resp.data.candidates_table) ? resp.data.candidates_table : []
-    rawJson.value = JSON.stringify(resp.data.raw || resp.data, null, 2)
   } catch (error) {
     console.error(error)
     const message = error?.response?.data?.error || error.message || 'Không thể lấy danh sách ứng viên.'
@@ -166,8 +173,9 @@ async function openCandidate(id) {
   modal.value.open = true
   modal.value.loading = true
   modal.value.candidateId = id
-  modal.value.detailJson = ''
-  modal.value.messagesJson = ''
+  modal.value.candidateData = null
+  modal.value.messagesData = []
+  modal.value.activeTab = 'detail'
 
   try {
     const [detailResp, messagesResp] = await Promise.all([
@@ -179,20 +187,55 @@ async function openCandidate(id) {
       })
     ])
 
-    modal.value.detailJson = JSON.stringify(detailResp.data?.data || detailResp.data || {}, null, 2)
-    modal.value.messagesJson = JSON.stringify(
-      messagesResp.data?.data || messagesResp.data || {},
-      null,
-      2
-    )
+    // Parse candidate data - handle nested data structure
+    let candidateData = detailResp.data
+    if (candidateData?.data) {
+      candidateData = candidateData.data
+    }
+    // If data has a candidate property, use that
+    if (candidateData?.candidate) {
+      candidateData = candidateData.candidate
+    }
+    modal.value.candidateData = candidateData || {}
+
+    // Parse messages data - handle nested structure
+    let messagesData = messagesResp.data
+    if (messagesData?.data) {
+      messagesData = messagesData.data
+    }
+    
+    // Extract messages array
+    let messagesList = []
+    if (Array.isArray(messagesData)) {
+      messagesList = messagesData
+    } else if (messagesData?.messages && Array.isArray(messagesData.messages)) {
+      messagesList = messagesData.messages
+    } else if (messagesData?.data && Array.isArray(messagesData.data)) {
+      messagesList = messagesData.data
+    } else if (messagesData?.list && Array.isArray(messagesData.list)) {
+      messagesList = messagesData.list
+    }
+    
+    modal.value.messagesData = messagesList
   } catch (error) {
     console.error(error)
     const message = error?.response?.data?.error || error.message || 'Không thể tải thông tin ứng viên.'
-    modal.value.detailJson = message
-    modal.value.messagesJson = message
+    alert(message)
+    modal.value.candidateData = { error: message }
+    modal.value.messagesData = []
   } finally {
     modal.value.loading = false
   }
+}
+
+function switchTab(tab) {
+  modal.value.activeTab = tab
+}
+
+function toggleDarkMode() {
+  darkMode.value = !darkMode.value
+  localStorage.setItem('dark_mode', darkMode.value)
+  document.body.classList.toggle('dark-mode', darkMode.value)
 }
 
 function resetResults() {
@@ -202,8 +245,9 @@ function resetResults() {
   modal.value.open = false
   modal.value.loading = false
   modal.value.candidateId = null
-  modal.value.detailJson = ''
-  modal.value.messagesJson = ''
+  modal.value.candidateData = null
+  modal.value.messagesData = []
+  modal.value.activeTab = 'detail'
 }
 
 onMounted(() => {
@@ -218,15 +262,29 @@ onMounted(() => {
     // Auto load openings if token exists
     loadOpenings()
   }
+  
+  // Apply dark mode on mount
+  if (darkMode.value) {
+    document.body.classList.add('dark-mode')
+  }
 })
+
 </script>
 
 <template>
   <div class="container">
     <div class="header">
-      <div class="title">🎯 Ứng dụng Truy vấn Base.vn (Vue + Vite)</div>
-      <div class="caption">Theo dõi ứng viên, xem chi tiết và lịch sử trao đổi một cách trực quan.</div>
-      <div class="status">Backend API: {{ backendStatusLabel }}</div>
+      <div class="header-left">
+        <div class="title">🎯 Ứng dụng Truy vấn Base.vn (Vue + Vite)</div>
+        <div class="caption">Theo dõi ứng viên, xem chi tiết và lịch sử trao đổi một cách trực quan.</div>
+        <div class="status">Backend API: {{ backendStatusLabel }}</div>
+      </div>
+      <div class="header-right">
+        <button @click="toggleDarkMode" class="dark-mode-toggle" :title="darkMode ? 'Chuyển sang Light Mode' : 'Chuyển sang Dark Mode'">
+          <span v-if="darkMode">☀️</span>
+          <span v-else>🌙</span>
+        </button>
+      </div>
     </div>
 
     <!-- Token Settings Component -->
@@ -345,25 +403,57 @@ onMounted(() => {
     <div class="row" v-if="rawJson">
       <div class="card" style="flex:1 1 100%;">
         <h3>🧾 JSON phản hồi thô</h3>
-        <div class="json">{{ rawJson }}</div>
+        <details>
+          <summary style="cursor: pointer; padding: 0.5rem; background: #f0f0f0; border-radius: 4px; margin-bottom: 0.5rem;">
+            Click để xem JSON (chỉ dành cho debug)
+          </summary>
+          <div class="json">{{ rawJson }}</div>
+        </details>
       </div>
     </div>
 
     <div v-if="modal.open" class="modal-backdrop" @click.self="modal.open = false">
       <div class="modal">
-        <div class="header">
-          <h3>📁 Ứng viên #{{ modal.candidateId }}</h3>
-          <button class="secondary" @click="modal.open = false">Đóng</button>
+        <div class="modal-header-bar">
+          <h3>� Thông tin ứng viên #{{ modal.candidateId }}</h3>
+          <button class="close-btn" @click="modal.open = false" title="Đóng">✕</button>
         </div>
-        <div class="status" v-if="modal.loading">Đang tải dữ liệu ứng viên...</div>
-        <div class="row">
-          <div class="card">
-            <h3>Chi tiết ứng viên</h3>
-            <div class="json">{{ modal.detailJson }}</div>
+        
+        <div class="modal-body">
+          <!-- Tabs -->
+          <div class="tabs">
+            <button 
+              class="tab-btn" 
+              :class="{ active: modal.activeTab === 'detail' }"
+              @click="switchTab('detail')"
+            >
+              📋 Chi tiết
+            </button>
+            <button 
+              class="tab-btn" 
+              :class="{ active: modal.activeTab === 'messages' }"
+              @click="switchTab('messages')"
+            >
+              💬 Tin nhắn
+            </button>
           </div>
-          <div class="card">
-            <h3>Tin nhắn</h3>
-            <div class="json">{{ modal.messagesJson }}</div>
+
+          <div class="tab-content">
+            <!-- Candidate Detail Tab -->
+            <div class="tab-pane" v-show="modal.activeTab === 'detail'">
+              <CandidateDetail 
+                :data="modal.candidateData" 
+                :loading="modal.loading"
+              />
+            </div>
+
+            <!-- Messages Tab -->
+            <div class="tab-pane" v-show="modal.activeTab === 'messages'">
+              <MessagesList 
+                :messages="modal.messagesData" 
+                :loading="modal.loading"
+              />
+            </div>
           </div>
         </div>
       </div>

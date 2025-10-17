@@ -2,6 +2,78 @@
 
 All notable changes to Base.vn Candidate Explorer will be documented in this file.
 
+## [2.2.1] - 2025-10-17
+
+### 🐛 Bug Fixes & Dark Mode Update
+
+#### Fixed
+
+- **Modal Tabs không hoạt động** - Changed from vanilla JS `onclick` to Vue reactive `@click`
+  - Tabs now switch smoothly between "Chi tiết" and "Tin nhắn"
+  - Used `v-show` directive instead of inline `display: none`
+  - Added `modal.activeTab` state to track active tab
+- **Không xem được chi tiết ứng viên và tin nhắn** - Fixed tab content visibility
+  - CandidateDetail component now visible in detail tab
+  - MessagesList component now visible in messages tab
+  - Both components render and update correctly
+
+#### Added
+
+- **Dark/Light Mode Toggle** - Top-right header button with ☀️/🌙 icons
+  - Toggle between light and dark themes
+  - LocalStorage persistence (`dark_mode` key)
+  - Auto-apply theme on page load
+  - Smooth transitions (0.3s)
+  - Hover animations on toggle button
+- **Light Mode Theme** - New default theme with light colors
+  - Background: `#f8fafc` (slate-50)
+  - Text: `#1e293b` (slate-800)
+  - Cards: `#ffffff` (white)
+  - Better for daytime use
+- **CSS Variables System** - Dynamic theming support
+  - `:root` defines light mode colors
+  - `body.dark-mode` overrides with dark colors
+  - All components use CSS variables
+  - Easy to add more themes in future
+
+#### Changed
+
+- **App.vue**:
+  - Added `darkMode` ref for theme state
+  - Added `modal.activeTab` state for tab tracking
+  - Added `switchTab(tab)` function for tab switching
+  - Added `toggleDarkMode()` function for theme toggle
+  - Updated `onMounted()` to apply dark mode on load
+  - Updated template with Vue reactive tabs (`:class`, `@click`, `v-show`)
+  - Restructured header with `header-left` and `header-right` sections
+- **style.css**:
+  - Changed `:root` variables to light mode colors
+  - Added `body.dark-mode` override section
+  - Added `.dark-mode-toggle` button styles
+  - Added `.header-left` and `.header-right` layout
+  - Added `body` transition for smooth theme changes
+  - Updated `.card`, `.modal`, `.modal-header-bar` with dark mode variants
+  - Updated `input`, `select`, `textarea` with theme support
+  - Added component-specific dark mode styles (CandidateDetail, MessagesList)
+
+#### Documentation
+
+- **DARK_MODE_FIX_2.2.1.md** - Comprehensive documentation
+  - Bug fixes explanation
+  - Dark mode features guide
+  - Before/After comparison
+  - Technical implementation details
+  - Color schemes reference
+  - Testing checklist
+  - Migration notes
+- **QUICK_FIX_GUIDE_2.2.1.md** - Quick reference guide
+  - Problems solved summary
+  - How to test instructions
+  - Key changes overview
+  - Troubleshooting tips
+
+---
+
 ## [2.1.0] - 2025-10-17
 
 ### 🔐 Security & Token Management Update
