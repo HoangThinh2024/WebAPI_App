@@ -1,0 +1,45 @@
+{
+  "name": "base-vn-candidate-explorer",
+  "version": "2.1.0",
+  "description": "Base.vn Candidate Explorer - Vue 3 + Node.js Express + pnpm",
+  "private": true,
+  "packageManager": "pnpm@10.0.0",
+  "workspaces": [
+    "web_vue",
+    "node_backend"
+  ],
+  "scripts": {
+    "dev": "pnpm --filter web-vue dev & pnpm --filter base-vn-node-backend dev",
+    "dev:frontend": "pnpm --filter web-vue dev",
+    "dev:backend": "pnpm --filter base-vn-node-backend dev",
+    "build": "pnpm --filter web-vue build",
+    "preview": "pnpm --filter web-vue preview",
+    "lint": "pnpm --filter web-vue lint && pnpm --filter base-vn-node-backend lint",
+    "format": "pnpm --filter web-vue format && pnpm --filter base-vn-node-backend format",
+    "clean": "node scripts/clean.cjs",
+    "clean:all": "pnpm clean && pnpm install",
+    "install:all": "pnpm install --recursive",
+    "update:all": "pnpm update --recursive --latest"
+  },
+  "keywords": [
+    "base.vn",
+    "vue3",
+    "vite",
+    "nodejs",
+    "express",
+    "pnpm",
+    "candidate-explorer"
+  ],
+  "author": "HoangThinh2024",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HoangThinh2024/WebAPI_App.git"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=10.0.0"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}

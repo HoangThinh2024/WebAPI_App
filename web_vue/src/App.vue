@@ -1,8 +1,12 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import axios from 'axios'
+import TokenSettings from './components/TokenSettings.vue'
+import { useTokenManager } from './composables/useTokenManager.js'
 
-const cachedBase = localStorage.getItem('LOCAL_PROXY_URL')
+const tokenManager = useTokenManager()
+
+const cachedBase = localStorage.getItem('base_backend_url')
 
 const defaultApiBase = (() => {
   if (cachedBase && cachedBase.includes('8000')) {
@@ -18,7 +22,7 @@ const defaultApiBase = (() => {
 })()
 
 const apiBase = ref(defaultApiBase)
-const accessToken = ref(localStorage.getItem('BASE_TOKEN') || '')
+const accessToken = ref('')
 const openings = ref([])
 const selectedOpeningId = ref('')
 const filters = ref({
@@ -77,10 +81,13 @@ function buildUrl(path) {
   return `${sanitizedApiBase.value}${path}`
 }
 
-function saveLocal() {
-  localStorage.setItem('BASE_TOKEN', accessToken.value)
-  localStorage.setItem('LOCAL_PROXY_URL', sanitizedApiBase.value)
-  alert('Đã lưu Access Token và Backend URL vào LocalStorage.')
+function handleTokenSaved(result) {
+  console.log('Token saved:', result)
+}
+
+function handleTokenCleared() {
+  accessToken.value = ''
+  resetResults()
 }
 
 async function loadOpenings() {
@@ -199,9 +206,19 @@ function resetResults() {
   modal.value.messagesJson = ''
 }
 
-if (accessToken.value) {
-  loadOpenings()
-}
+onMounted(() => {
+  // Tự động load token từ localStorage
+  const savedToken = tokenManager.getToken()
+  if (savedToken && !tokenManager.isTokenExpired()) {
+    accessToken.value = savedToken
+    const savedUrl = tokenManager.getBackendUrl()
+    if (savedUrl) {
+      apiBase.value = savedUrl
+    }
+    // Auto load openings if token exists
+    loadOpenings()
+  }
+})
 </script>
 
 <template>
@@ -212,18 +229,25 @@ if (accessToken.value) {
       <div class="status">Backend API: {{ backendStatusLabel }}</div>
     </div>
 
+    <!-- Token Settings Component -->
+    <TokenSettings
+      v-model:access-token="accessToken"
+      :api-base="sanitizedApiBase"
+      @token-saved="handleTokenSaved"
+      @token-cleared="handleTokenCleared"
+    />
+
     <div class="row">
       <div class="card" style="min-width:340px;">
         <h3>🔑 Tham số API</h3>
         <label>Access Token</label>
-        <input v-model.trim="accessToken" placeholder="Nhập BASE_TOKEN" />
+        <input v-model.trim="accessToken" placeholder="Nhập BASE_TOKEN" type="password" />
         <label>Backend API URL</label>
         <input v-model.trim="apiBase" placeholder="http://localhost:3000/api" />
         <div class="toolbar">
           <button @click="loadOpenings" :disabled="loading.openings || !accessToken">
             🔄 Tải Openings
           </button>
-          <button class="secondary" @click="saveLocal">💾 Lưu Token</button>
         </div>
         <div class="status" v-if="loading.openings">Đang tải danh sách openings...</div>
       </div>

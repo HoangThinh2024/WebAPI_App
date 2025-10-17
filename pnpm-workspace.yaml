@@ -1,0 +1,4 @@
+packages:
+  - 'web_vue'
+  - 'node_backend'
+  - 'streamlit_app'
