@@ -8,7 +8,7 @@
 [![Security](https://img.shields.io/badge/Security-Production%20Ready-brightgreen.svg)](docs/SECURITY_DEPLOYMENT_GUIDE.md)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-**Version:** 2.2.2 (Production Ready) ✅  
+**Version:** 2.2.2 (Production Ready) ✅
 **Released:** 2025-10-17
 
 ## ✨ Highlights

@@ -117,7 +117,7 @@ Format: `<type>(<scope>): <subject>`
 
 ```bash
 feat(auth): add login functionality
-fix(api): resolve CORS issue  
+fix(api): resolve CORS issue
 docs(readme): update installation steps
 style(ui): improve button styling
 refactor(utils): optimize sanitizer

@@ -3,29 +3,29 @@
     // Vue 3 Development
     "vue.volar",
     "vue.vscode-typescript-vue-plugin",
-    
+
     // Code Quality
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "editorconfig.editorconfig",
-    
+
     // Git
     "eamodio.gitlens",
     "mhutchie.git-graph",
-    
+
     // Utilities
     "christian-kohler.path-intellisense",
     "christian-kohler.npm-intellisense",
     "usernamehw.errorlens",
     "streetsidesoftware.code-spell-checker",
-    
+
     // Documentation
     "yzhang.markdown-all-in-one",
     "davidanson.vscode-markdownlint",
-    
+
     // PowerShell (Windows)
     "ms-vscode.powershell",
-    
+
     // Optional but useful
     "formulahendry.auto-rename-tag",
     "bradlc.vscode-tailwindcss",

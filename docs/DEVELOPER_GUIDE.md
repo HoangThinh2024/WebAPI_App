@@ -818,6 +818,6 @@ git gc --aggressive       # Optimize Git repo
 
 ---
 
-**Version:** 2.2.2  
-**Last Updated:** 2025-10-17  
+**Version:** 2.2.2
+**Last Updated:** 2025-10-17
 **Author:** HoangThinh2024
