@@ -190,3 +190,17 @@ cython_debug/
 # Streamlit
 .streamlit/
 .streamlit/secrets.toml
+
+# Node.js - build artifacts and dependencies
+web_vue/node_modules/
+node_backend/node_modules/
+node_modules/
+web_vue/dist/
+node_backend/dist/
+dist/
+.vite/
+*.log
+.DS_Store
+
+# Note: pnpm-lock.yaml should be committed for reproducible builds
+
