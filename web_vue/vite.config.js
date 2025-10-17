@@ -6,11 +6,34 @@ export default defineConfig({
   plugins: [vue()],
   server: {
     port: 5173,
+    host: true, // Listen on all addresses including LAN and public
+    strictPort: false, // Try next available port if 5173 is busy
+    cors: true,
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:8000',
+        target: 'http://localhost:3000',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, '/api')
+      }
+    }
+  },
+  preview: {
+    port: 4173,
+    host: true,
+    strictPort: false
+  },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: false,
+    minify: 'terser',
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor': ['vue', 'axios']
+        }
       }
     }
   }

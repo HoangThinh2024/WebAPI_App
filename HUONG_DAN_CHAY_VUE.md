@@ -2,53 +2,59 @@
 
 ## Bước 1: Cài đặt Node.js (nếu chưa có)
 
-Tải và cài đặt Node.js từ: https://nodejs.org/
+Tải và cài đặt Node.js từ: <https://nodejs.org/>
 
 Khuyến nghị: Node.js 18 LTS hoặc mới hơn
 
 Kiểm tra đã cài đặt:
+
 ```powershell
 node --version
 npm --version
 ```
 
-## Bước 2: Cài đặt dependencies cho Vue project
+## Bước 2: Cài đặt dependencies
 
 ```powershell
+cd node_backend
+npm install
+
+# Cài đặt frontend
 cd web_vue
 npm install
 ```
 
-Lệnh này sẽ cài đặt:
-- Vue 3
-- Vite
-- Axios
-- @vitejs/plugin-vue
+Các lệnh trên sẽ cài đặt:
 
-## Bước 3: Chạy FastAPI Backend
+- **Backend:** Express, Axios, CORS, Nodemon
+- **Frontend:** Vue 3, Vite, Axios, @vitejs/plugin-vue
+
+## Bước 3: Chạy Node.js Backend
 
 Mở Terminal 1:
+
 ```powershell
-cd streamlit_app
-python web_api.py
+cd node_backend
+npm run dev
 ```
 
-Backend sẽ chạy tại: http://127.0.0.1:8000
+Backend sẽ chạy tại: <http://localhost:3000> (API prefix: `/api`)
 
 ## Bước 4: Chạy Vue Development Server
 
 Mở Terminal 2:
+
 ```powershell
 cd web_vue
 npm run dev
 ```
 
-Vue app sẽ chạy tại: http://localhost:5173
+Vue app sẽ chạy tại: <http://localhost:5173>
 
 ## Bước 5: Sử dụng ứng dụng
 
-1. Mở trình duyệt: http://localhost:5173
-2. Nhập Access Token
+1. Mở trình duyệt: <http://localhost:5173>
+2. Nhập Access Token (và kiểm tra Backend URL nếu cần)
 3. Bấm "Tải Openings"
 4. Chọn Opening và Stage
 5. Bấm "Gửi yêu cầu API"
@@ -57,20 +63,24 @@ Vue app sẽ chạy tại: http://localhost:5173
 ## Tính năng nổi bật của Vue + Vite
 
 ✅ **Hot Module Replacement (HMR)**
+
 - Sửa code .vue file → tự động reload ngay lập tức
 - Không cần refresh toàn bộ trang
 
 ✅ **Vue Extension Support**
+
 - Syntax highlighting
 - IntelliSense / autocomplete
 - Error checking
 - Refactoring tools
 
 ✅ **Component-based Architecture**
+
 - Dễ tách nhỏ thành nhiều component
 - Code dễ maintain và scale
 
 ✅ **Modern Build Tool**
+
 - Vite build cực nhanh
 - ES modules native
 - Code splitting tự động
@@ -79,18 +89,20 @@ Vue app sẽ chạy tại: http://localhost:5173
 
 Bạn vẫn có thể dùng bản standalone Vue HTML:
 
-**Terminal 1 - FastAPI:**
+**Terminal 1 - Node backend:**
+
 ```powershell
-cd streamlit_app
-python web_api.py
+cd node_backend
+npm start
 ```
 
 **Terminal 2 - Static Server:**
+
 ```powershell
 python -m http.server 5555
 ```
 
-Mở: http://127.0.0.1:5555/app_vue.html
+Mở: <http://127.0.0.1:5555/app_vue.html>
 
 ## Build Production
 
@@ -106,11 +118,14 @@ Output tại `web_vue/dist/` - có thể deploy lên hosting tĩnh (Vercel, Netl
 ## Troubleshooting
 
 ### npm install bị lỗi
+
 - Xóa folder `node_modules` và file `package-lock.json`
 - Chạy lại `npm install`
 
 ### Port 5173 đã được sử dụng
+
 Sửa file `vite.config.js`:
+
 ```js
 server: {
   port: 5174, // thay đổi port
@@ -119,7 +134,8 @@ server: {
 ```
 
 ### CORS error
-- Đảm bảo FastAPI đang chạy ở http://127.0.0.1:8000
+
+- Đảm bảo Node backend đang chạy ở <http://localhost:3000>
 - Vite proxy đã cấu hình sẵn trong `vite.config.js`
 
 ## Scripts
