@@ -206,5 +206,29 @@ dist/
 
 # Note: pnpm-lock.yaml should be committed for reproducible builds
 
+# Security reports (generated)
 security-audit-report.json
 scripts\production\security-audit-report.json
+
+# Backup and temp files
+*.bak
+*.backup
+*.old
+*.tmp
+*.temp
+*~
+*.swp
+*.swo
+
+# OS specific
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Cache
+.cache/
+*.cache
