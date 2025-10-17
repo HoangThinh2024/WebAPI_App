@@ -182,9 +182,59 @@ POST /api/candidates
 3. Tìm địa chỉ **Network** trong terminal (vd: `http://192.168.1.100:5173`)
 4. Mở địa chỉ đó trên điện thoại
 
+## 👨‍💻 For Developers
+
+### Clone & Contribute
+
+Developers có thể clone project và phát triển tính năng mới mà **KHÔNG Ảnh hưởng** đến scripts tự động hóa:
+
+```bash
+# Clone repository
+git clone https://github.com/HoangThinh2024/WebAPI_App.git
+cd WebAPI_App
+
+# Install dependencies
+pnpm install
+
+# Create feature branch
+git checkout -b feature/my-feature
+
+# Start development
+pnpm dev  # hoặc dùng app-manager.ps1
+```
+
+**📖 Đọc trước khi code:**
+
+- **[DEVELOPER_GUIDE.md](docs/DEVELOPER_GUIDE.md)** - Hướng dẫn đầy đủ cho developers ⭐
+- **[CONTRIBUTING.md](docs/CONTRIBUTING.md)** - Quy tắc đóng góp code
+- **[docs/README.md](docs/README.md)** - Documentation index
+
+**Quy tắc quan trọng:**
+
+- ✅ **CÓ THỂ SỬA**: `web_vue/src/`, `node_backend/`, `docs/`
+- ❌ **KHÔNG SỬA**: `scripts/`, `app-manager.ps1`, automation scripts
+
+**Workflow:**
+
+1. Fork & clone repo
+2. Create feature branch
+3. Make changes in `web_vue/src/` or `node_backend/`
+4. Test locally
+5. Commit with conventional message (`feat:`, `fix:`, etc.)
+6. Create Pull Request
+7. Wait for review
+
+Chi tiết xem [DEVELOPER_GUIDE.md](docs/DEVELOPER_GUIDE.md)
+
+---
+
 ## 🏗️ Build Production
 
 ```powershell
+# Option 1: Dùng automation script (Recommended)
+.\scripts\production\build-production.ps1
+
+# Option 2: Manual
 cd web_vue
 pnpm build
 ```

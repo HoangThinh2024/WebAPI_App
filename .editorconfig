@@ -1,0 +1,61 @@
+# EditorConfig - Đảm bảo code style nhất quán giữa các editors/IDEs
+# https://editorconfig.org
+
+# Top-most EditorConfig file
+root = true
+
+# All files
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+# Markdown files
+[*.md]
+trim_trailing_whitespace = false
+max_line_length = 100
+
+# JavaScript/TypeScript files
+[*.{js,ts,jsx,tsx,mjs,cjs}]
+indent_size = 2
+quote_type = single
+
+# Vue files
+[*.vue]
+indent_size = 2
+
+# JSON files
+[*.json]
+indent_size = 2
+
+# YAML files
+[*.{yml,yaml}]
+indent_size = 2
+
+# Python files
+[*.py]
+indent_size = 4
+
+# PowerShell files
+[*.ps1]
+indent_size = 4
+
+# Shell scripts
+[*.sh]
+indent_size = 2
+end_of_line = lf
+
+# Makefile
+[Makefile]
+indent_style = tab
+
+# Package files
+[{package.json,package-lock.json,pnpm-lock.yaml}]
+indent_size = 2
+
+# Config files
+[*.config.{js,ts}]
+indent_size = 2
